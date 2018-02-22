@@ -1,0 +1,30 @@
+.connectBody {
+  max-width: 70%;
+  background-image: url(images/connectBackground.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: auto;
+}
+
+.input-field {
+  width: 30%;
+  margin: auto;
+}
+
+.toRight {
+  float: right;
+  margin-right: 20%;
+}
+
+form {
+  margin-top: 7%;
+}
+
+hr {
+  width: 70%;
+}
+
+h1 {
+  font-size: 3em;
+  text-align: center;
+}

@@ -1,18 +1,35 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Index</title>
-  </head>
-  <body>
-    <h1>Merci de vous connecter avant de pouvoir utiliser le chat en direct</h1>
-    <form>
-      <label for="username">Nom d'utilisateur : </label>
-      <input type="text" name="username">
-      <label for="password">Mot de passe : </label>
-      <input type="password" name="password">
-      <input type="submit">
-    </form>
-    <p>Vous ne possédez pas de compte ? <button>Inscrivez vous</button>
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <link rel="stylesheet" href="style.css" type="text/css">
+  <title>Index</title>
+</head>
+
+<body class="connectBody">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+  <h1 class="grey-text text-lighten-4">Merci de vous connecter avant de pouvoir utiliser le chat en direct</h1>
+  <form class="center-align">
+    <div class="row white-text">
+      <div class="input-field">
+        <label for="username" class="white-text">Nom d'utilisateur : </label>
+        <input type="text" name="username" class="validate">
+      </div>
+      <div class="input-field">
+        <label for="password" class="white-text">Mot de passe : </label>
+        <input type="password" name="password">
+      </div>
+
+      <input type="submit" value="Connexion" class="black-text">
+    </div>
+
+  </form>
+  <hr>
+  <p class="toRight white-text">Vous ne possédez pas de compte ? <button class="black-text">Inscrivez vous</button>
+</body>
+
 </html>
