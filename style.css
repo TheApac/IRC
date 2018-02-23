@@ -1,12 +1,12 @@
 .connectBody {
   max-width: 70%;
-  background-image: url(images/connectBackground.png);
-  background-repeat: no-repeat;
+  background: url(images/connectBackground.png) no-repeat center center fixed;
   background-size: cover;
   margin: auto;
 }
 
 .input-field {
+  font-size: 1em;
   width: 30%;
   margin: auto;
 }
