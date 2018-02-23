@@ -37,7 +37,7 @@ CREATE TABLE `Role`
 CREATE TABLE `Message`
 (
   `Id` INT NOT NULL AUTO_INCREMENT,
-  `Content` VARCHAR(300) NOT NULL,
+  `Content` VARCHAR(500) NOT NULL,
   `PublicationDate` DATE NOT NULL,
   `ChannelId` INT NOT NULL,
   PRIMARY KEY (`Id`),
