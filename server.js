@@ -46,7 +46,7 @@ var server = http.createServer(function(req, res) {
       res.write(data);
       res.end();
     });
-  } else if (req.url === '/index.html') {
+  } else {
     fs.readFile('index.html', function(err, data) {
       res.writeHead(200, {
         'Content-Type': 'text/html'
