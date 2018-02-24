@@ -29,30 +29,50 @@ h1 {
   text-align: center;
 }
 
+.rowMain {
+  margin: 0;
+}
+
+.main {
+  margin: 0;
+}
+
 .tabs {
   border: black solid 1px;
 }
 
 .main {
   border: black solid 1px;
-  height: 90vh;
-  overflow : auto;
+  height: 89.5vh;
+  overflow: auto;
 }
 
 .date {
   vertical-align: top;
   padding-top: 5px;
   width: 5%;
-  display:inline-block;
+  display: inline-block;
 }
+
 .sender {
   vertical-align: top;
   padding-top: 5px;
   width: 10%;
-  display:inline-block;
+  display: inline-block;
 }
+
 .content {
   width: 83%;
   word-break: break-all;
-  display:inline-block;
+  display: inline-block;
+}
+
+input.inputMessages {
+  border: none;
+  border-left: 1px solid grey;
+  border-right: 1px solid grey;
+  border-bottom: 1px solid grey;
+  height: 2.8rem;
+  padding-left: 10px;
+  margin: 0;
 }

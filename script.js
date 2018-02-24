@@ -2,7 +2,6 @@ function OpenSignIn() {
   $(".passwordConfirm").hide("slow");
   $("input:submit").attr("value", "Connexion");
   $("h1").html("Merci de vous connecter avant de pouvoir utiliser le chat en direct");
-  $("h1").
   $("p").html('Vous ne possédez pas compte ? <button class="black-text" onclick="OpenLogIn()">Inscrivez vous</button>');
 }
 
