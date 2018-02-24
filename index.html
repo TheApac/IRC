@@ -7,36 +7,45 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
   <title>Index</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 </head>
 
-<body class="connectBody">
+<body class="connectBody" ng-app="indexApp" ng-controller="indexCtrl">
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script>var socket = io('http://localhost:8080');</script>
   <script type="text/javascript" src="script.js"></script>
-  <h1 class="grey-text text-lighten-4">Merci de créer un compte avant de pouvoir utiliser le chat en direct</h1>
+  <h1 class="grey-text text-lighten-4" ng-show="isLogIn">Merci de vous connecter avant de pouvoir utiliser le chat en direct</h1>
+  <h1 class="grey-text text-lighten-4" ng-show="!isLogIn">Merci de créer un compte avant de pouvoir utiliser le chat en direct</h1>
   <form class="center-align">
     <div class="row white-text">
       <div class="input-field">
         <label for="username" class="white-text">Nom d'utilisateur : </label>
-        <input type="text" name="username" class="validate">
+        <input type="text" name="username" class="validate" ng-model="username">
       </div>
       <div class="input-field">
         <label for="password" class="white-text">Mot de passe : </label>
-        <input type="password" name="password">
+        <input type="password" name="password" ng-model="password">
       </div>
-      <div class="input-field passwordConfirm">
+      <div class="input-field passwordConfirm" ng-show="!isLogIn">
         <label for="passwordConfirm" class="white-text">Confirmez le mot de passe : </label>
-        <input type="password" name="passwordConfirm">
+        <input type="password" name="passwordConfirm" ng-model="passwordConfirm">
       </div>
 
-      <input type="submit" value="Inscription" class="black-text">
+      <input type="submit" value="Connexion" class="black-text" ng-show="isLogIn">
+      <input type="submit" value="Inscription" class="black-text" ng-show="!isLogIn">
+      <span>
+        <br>divers tests :<br>
+        username: {{ username }}<br>
+        password: {{ password }}
+      </span>
     </div>
 
   </form>
   <hr>
-  <p class="toRight white-text">Vous possédez un compte ? <button class="black-text" onclick="OpenSignIn()">Connectez vous</button></p>
+  <p class="toRight white-text" ng-show="isLogIn">Vous ne possédez pas de compte ? <button class="black-text" ng-click="switchLogInSignIn()">Inscrivez vous</button></p>
+  <p class="toRight white-text" ng-show="!isLogIn">Vous possédez un compte ? <button class="black-text" ng-click="switchLogInSignIn()">Connectez vous</button></p>
 </body>
 
 </html>
