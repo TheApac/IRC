@@ -66,7 +66,7 @@ var io = require('socket.io').listen(server);
 
 io.sockets.on('connection', function(socket) {
   socket.on('tryConnect', function(message) {
-    var sql = 'Select count(*) from User where Name ="' + message[0] + '" and Password = "' + message[1] + '"';
+    var sql = 'Select count(*) as count from User where Name ="' + message[0] + '" and Password = "' + message[1] + '"';
     con.query(sql, function(err, count) {
       if (err) throw err;
       if (count[0].count > 0) {
