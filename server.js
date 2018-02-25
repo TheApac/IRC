@@ -25,8 +25,13 @@ var server = http.createServer(function(req, res) {
       res.write(data);
       res.end();
     });
-  } else if (req.url === '/script.js') {
-    fs.readFile('script.js', function(err, data) {
+  } else if (req.url === '/index-script.js') {
+    fs.readFile('index-script.js', function(err, data) {
+      res.write(data);
+      res.end();
+    });
+  } else if (req.url === '/main-script.js') {
+    fs.readFile('main-script.js', function(err, data) {
       res.write(data);
       res.end();
     });
@@ -65,7 +70,7 @@ io.sockets.on('connection', function(socket) {
     con.query(sql, function(err, count) {
       if (err) throw err;
       if (count[0].count > 0) {
-        socket.emit("ConnectSucces");
+        socket.emit("ConnectSuccess");
       } else {
         socket.emit("ConnectFailure");
       }
