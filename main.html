@@ -20,12 +20,13 @@
 <body ng-app="mainApp" ng-controller="mainCtrl">
   <div class="row rowMain">
     <div class="col m10">
-      <ul class="tabs col m10" ng-bind-html="channelTabs"></ul>
+      <div class="col m10" ng-bind-html="channelTabs">
+      </div>
       <div class="col m2">
-        <button class="black-text" ng-click="joinTab()">Join a channel</button>
+        <button class="black-text modal-trigger" data-target="modalChannels">Join a channel</button>
       </div>
     </div>
-    <div class="col m2 tabs">
+    <div class="col m2">
       Bonjour {{ main.user }}
       <button class="black-text" ng-click="deconnexion()">deconnexion</button>
     </div>
@@ -54,6 +55,20 @@
     <button class="black-text" ng-click="sendMessage()">send</button>
   </div>
   <div class="row col l2 rowMain">
+  </div>
+
+
+  <div id="modalChannels" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <h4>Join a channel</h4>
+      <p>Coucou</p>
+      <!--<select ng-model="selectedChannel" ng-options="x for x in main.availableChannelsList">
+      </select>-->
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close btn-flat" ng-click="joinTab()">Join</a>
+      <!--<a href="#!" class="modal-action modal-close btn-flat btn-cancel" ng-click="cancelJoinTab()">Cancel</a>-->
+    </div>
   </div>
 </body>
 

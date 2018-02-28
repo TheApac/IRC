@@ -11,7 +11,8 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
    $scope.main.listUsersInChannel = {}; // list of connected users in each channel
    $scope.main.listMsgInChannel = {}; // list of msg displayed in the channel since current user's connection
    $scope.model.availableChannelsList = []; // list of all opened channels in the server
-   $scope.model.writeChannels = FALSE;
+   $scope.model.writeChannels = false;
+   $scope.model.selectedChannel = "";
 
    socket.emit("getChannels");
 
@@ -31,7 +32,7 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
    };
    // lorsqu'on envoie un messages
    $scope.sendMessage = function() {
-     if (left(main.message, 1) == '/') {
+     if (left($scope.main.message, 1) == '/') {
        $scope.execCommand(main.message);
      } else {
        socket.emit('NewMsg', [msg, main.user, current_date_time]);
@@ -56,7 +57,7 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
        case "/channels":
          if(len(tmpMsg) == 1) {
            socket.emit('getChannels', [$scope.main.user]);
-           $scope.model.writeChannels = TRUE;
+           $scope.model.writeChannels = true;
          } else {
            $scope.dispErrorCmd();
          }
@@ -117,11 +118,16 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
    };
    socket.on("ChannelCreated", function() {
      var tabs = $scope.main.channelTabs;
-     var newTab = "<li class='tab col md2'><a ng-click='switchTab("+tabName+")'>"+tabName+"</a></li>";
-     $scope.main.channelTabs = tabs+newTab;
+     if(tabs == "")
+       tabs = "<ul class='tabs'>";
+     else {
+       tabs.slice(0, -5); // remove '</ul>'
+     }
+     var newTab = "<li class='tab col m2'><a href='#"+tabName+"'>"+tabName+"</a></li>";
+     $scope.main.channelTabs = tabs+newTab+'</ul>';
    });
    socket.on("ChannelExists", function() {
-     console.log("channel name already used");
+     alert("channel name already used");
    });
    socket.on("deconnexionChannel", function(param){
      if (param[1] == $scope.main.user) {
@@ -139,14 +145,14 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
      $scope.model.availableChannelsList = [];
      msg = "";
      for(chan in channels) {
-       $scope.model.availableChannelsList[] = chan.name;
+       $scope.model.availableChannelsList.push(chan.name);
        if($scope.model.writeChannels) {
          msg = msg + ", " + chan.name;
        }
      }
      if($scope.model.writeChannels) {
        // TODO write msg: msg
-       $scope.model.writeChannels = FALSE;
+       $scope.model.writeChannels = false;
      }
    });
    socket.on("newMessage", function(params) {
