@@ -14,7 +14,11 @@
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
-  <script>var socket = io('http://localhost:8080');</script>
+  <script>var socket = io('http://localhost:8080');
+  $(document).ready(function(){
+    $('.modal').modal();
+  });
+</script>
 </head>
 
 <body ng-app="mainApp" ng-controller="mainCtrl">
@@ -23,7 +27,7 @@
       <div class="col m10" ng-bind-html="channelTabs">
       </div>
       <div class="col m2">
-        <button class="black-text modal-trigger" data-target="modalChannels">Join a channel</button>
+        <button class="black-text modal-trigger" href="#modalChannels">Join a channel</button>
       </div>
     </div>
     <div class="col m2">
@@ -61,13 +65,14 @@
   <div id="modalChannels" class="modal modal-fixed-footer">
     <div class="modal-content">
       <h4>Join a channel</h4>
-      <p>Coucou</p>
-      <!--<select ng-model="selectedChannel" ng-options="x for x in main.availableChannelsList">
-      </select>-->
+      <p>
+        <select ng-model="selectedChannel" ng-options="x for x in model.availableChannelsList">
+        </select>
+      </p>
     </div>
     <div class="modal-footer">
       <a href="#!" class="modal-action modal-close btn-flat" ng-click="joinTab()">Join</a>
-      <!--<a href="#!" class="modal-action modal-close btn-flat btn-cancel" ng-click="cancelJoinTab()">Cancel</a>-->
+      <a href="#!" class="modal-action modal-close btn-flat btn-cancel" ng-click="cancelJoinTab()">Cancel</a>
     </div>
   </div>
 </body>
