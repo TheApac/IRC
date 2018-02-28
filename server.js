@@ -26,8 +26,16 @@ con.query(sql, function(err, channels) {
 
 
 var server = http.createServer(function(req, res) {
-  if (req.url === '/style.css') {
-    fs.readFile('style.css', function(err, data) {
+  if (req.url === '/main-style.css') {
+    fs.readFile('main-style.css', function(err, data) {
+      res.writeHead(200, {
+        'Content-Type': 'text/css'
+      });
+      res.write(data);
+      res.end();
+    });
+  } else if (req.url === '/index-style.css') {
+    fs.readFile('index-style.css', function(err, data) {
       res.writeHead(200, {
         'Content-Type': 'text/css'
       });

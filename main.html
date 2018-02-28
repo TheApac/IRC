@@ -6,24 +6,28 @@
   <title>IRC Chat</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-  <link rel="stylesheet" href="style.css" type="text/css">
+  <link rel="stylesheet" href="main-style.css" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-cookies.js"></script>
-</head>
-
-<body ng-app="mainApp" ng-controller="mainCtrl">
+  <script type="text/javascript" src="main-script.js"></script>
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script>var socket = io('http://localhost:8080');</script>
-  <script type="text/javascript" src="main-script.js"></script>
+</head>
+
+<body ng-app="mainApp" ng-controller="mainCtrl">
   <div class="row rowMain">
-    <div class="col m10 tabs">
-      ICI ON AURA LES TABS
+    <div class="col m10">
+      <ul class="tabs col m10" ng-bind-html="channelTabs"></ul>
+      <div class="col m2">
+        <button class="black-text" ng-click="joinTab()">Join a channel</button>
+      </div>
     </div>
     <div class="col m2 tabs">
-      ICI &lt;PSEUDO> ET DECONNEXION
+      Bonjour {{ main.user }}
+      <button class="black-text" ng-click="deconnexion()">deconnexion</button>
     </div>
   </div>
   <div class="row main rowMain">
@@ -46,7 +50,8 @@
     </div>
   </div>
   <div class="row col m10 s12 rowMain">
-    <input type="text" class="inputMessages browser-default col s10" placeholder="type your message here";>
+    <input type="text" class="inputMessages browser-default col s10" placeholder="type your message here" ng-model="main.message">
+    <button class="black-text" ng-click="sendMessage()">send</button>
   </div>
   <div class="row col l2 rowMain">
   </div>
