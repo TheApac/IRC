@@ -14,11 +14,17 @@
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
-  <script>var socket = io('http://localhost:8080');
-  $(document).ready(function(){
-    $('.modal').modal();
-  });
-</script>
+  <script>
+    var socket = io('http://localhost:8080');
+    $(document).ready(function() {
+      $('.modal').modal();
+      $(".inputMessages").keypress(function(event) {
+        if (event.keyCode == 13) {
+          $(".sendMsgBtn").click();
+        }
+      });
+    });
+  </script>
 </head>
 
 <body ng-app="mainApp" ng-controller="mainCtrl">
@@ -56,7 +62,7 @@
   </div>
   <div class="row col m10 s12 rowMain">
     <input type="text" class="inputMessages browser-default col s10" placeholder="type your message here" ng-model="main.message">
-    <button class="black-text" ng-click="sendMessage()">send</button>
+    <button class="black-text sendMsgBtn" ng-click="sendMessage()">Send</button>
   </div>
   <div class="row col l2 rowMain">
   </div>
