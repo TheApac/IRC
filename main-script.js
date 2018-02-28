@@ -13,6 +13,23 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
 
 /* socket functions :
 
+//-----------------------------------------------
+Récuperer tout les noms de channels :
+socket.emit("getChannels");
+socket.on("ChannelNames", function(Names) {
+  for (var i = 0; i < Names.length; i++) {
+    console.log(Names[i].Name);
+  }
+});
+------------------------------------------------//
+Récuperer tout les utilisateurs sur un channel :
+socket.emit('ConnectedOnChannel',$scope.model.username);
+socket.on("ConnectedOnChannel", function(Names) {
+  for (var i = 0; i < Names.length; i++) {
+    console.log(Names[i]);
+  }
+});
+------------------------------------------------//
 pour la deconnexion :
 onbeforeunload
 */

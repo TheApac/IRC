@@ -13,14 +13,16 @@ indApp.controller('indexCtrl', function($scope, $cookies) {
   };
   $scope.submitSignIn = function() {
     if ($scope.model.username != '' && $scope.model.password == $scope.model.passwordConfirm) {
-      var rep = socket.emit('signin', [$scope.model.username, $scope.model.password]);
-      if (rep) {
-        $cookies.put('user', $scope.model.username);
-        location.href = "/main.html";
-      } else
-        console.log(rep);
-    }
+      socket.emit('signin', [$scope.model.username, $scope.model.password]);
+    };
   };
+  socket.on("AccountCreated", function() {
+    $cookies.put('user', $scope.model.username);
+    location.href = "/main.html";
+  });
+  socket.on("NameInUse", function() {
+    alert("Username already used");
+  });
   $scope.submitLogIn = function() {
     if ($scope.model.username != '') {
       socket.emit('tryConnect', [$scope.model.username, $scope.model.password]);
@@ -33,8 +35,10 @@ indApp.controller('indexCtrl', function($scope, $cookies) {
   socket.on("ConnectFailure", function() {
     alert("Username or password incorrect");
   });
+  socket.on("ConnectedOnChannel", function(param) {
+    console.log(param);
+  });
 });
-
 /* socket functions :
 
 pour la deconnexion :
