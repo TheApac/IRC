@@ -1,8 +1,14 @@
-.connectBody {
-  max-width: 70%;
-  background: url(images/connectBackground.png) no-repeat center center fixed;
+body {
+  background: url(images/connectBackgroundOpacity.png) no-repeat center center fixed;
+  background-op
   background-size: cover;
-  margin: auto;
+}
+
+.MessageLine:nth-child(even) {
+  background-color: rgba(50,50,50,0.2);
+}
+.MessageLine:nth-child(odd) {
+  background-color: rgba(150,150,150,0.2);
 }
 
 .input-field {
@@ -49,14 +55,14 @@ h1 {
 
 .date {
   vertical-align: top;
-  padding-top: 5px;
+  padding-top: 3px;
   width: 5%;
   display: inline-block;
 }
 
 .sender {
   vertical-align: top;
-  padding-top: 5px;
+  padding-top: 3px;
   width: 10%;
   display: inline-block;
 }

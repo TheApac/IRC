@@ -68,6 +68,14 @@ var server = http.createServer(function(req, res) {
       res.write(data);
       res.end();
     });
+  } else if (req.url === '/images/connectBackgroundOpacity.png') {
+    fs.readFile('images/connectBackgroundOpacity.png', function(err, data) {
+      res.writeHead(200, {
+        'Content-Type': 'image/png'
+      });
+      res.write(data);
+      res.end();
+    });
   } else {
     fs.readFile('index.html', function(err, data) {
       res.writeHead(200, {

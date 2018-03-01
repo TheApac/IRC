@@ -3,47 +3,33 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Index</title>
-  <link rel="stylesheet" href="index-style.css" type="text/css">
+  <link rel="stylesheet" href="style.css" type="text/css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-cookies.js"></script>
+  <title>Index</title>
 </head>
 
-<body class="connectBody" ng-app="indexApp" ng-controller="indexCtrl">
+<body class="connectBody">
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-  <script src="/socket.io/socket.io.js"></script>
-  <script>var socket = io('http://localhost:8080');</script>
-  <script type="text/javascript" src="index-script.js"></script>
-  <h1 class="grey-text text-lighten-4" ng-show="model.isLogIn">Merci de vous connecter avant de pouvoir utiliser le chat en direct</h1>
-  <h1 class="grey-text text-lighten-4" ng-show="!model.isLogIn">Merci de vous inscrire avant de pouvoir utiliser le chat en direct</h1>
-  <form class="center-align" name="ConnexionForm">
+  <h1 class="grey-texttext-lighten-4">Merci de vous connecter avant de pouvoir utiliser le chat en direct</h1>
+  <form class="center-align">
     <div class="row white-text">
       <div class="input-field">
         <label for="username" class="white-text">Nom d'utilisateur : </label>
-        <input type="text" name="username" class="validate" ng-model="model.username" required>
+        <input type="text" name="username" class="validate">
       </div>
       <div class="input-field">
         <label for="password" class="white-text">Mot de passe : </label>
-        <input type="password" name="password" ng-model="model.password" required>
+        <input type="password" name="password">
       </div>
-      <div class="input-field animate-if" ng-if="!model.isLogIn">
-        <label for="passwordConfirm" class="white-text">Confirmez le mot de passe : </label>
-        <input type="password" name="passwordConfirm" ng-model="model.passwordConfirm" required>
-      </div>
-      <span class="errorMsg" ng-show="!model.isLogIn && (model.password != model.passwordConfirm)">Les 2 mots de passe doivent être identiques<br></span>
 
-      <input type="submit" value="Connexion" class="black-text" ng-show="model.isLogIn" ng-click="submitLogIn()">
-      <input type="submit" value="Inscription" class="black-text" ng-show="!model.isLogIn" ng-click="submitSignIn()">
+      <input type="submit" value="Connexion" class="black-text">
     </div>
 
   </form>
   <hr>
-  <p class="toRight white-text" ng-show="model.isLogIn">Vous ne possédez pas de compte ? <button class="black-text" ng-click="switchLogInSignIn()">Inscrivez vous</button></p>
-  <p class="toRight white-text" ng-show="!model.isLogIn">Vous possédez un compte ? <button class="black-text" ng-click="switchLogInSignIn()">Connectez vous</button></p>
+  <p class="toRight white-text">Vous ne possédez pas de compte ? <button class="black-text">Inscrivez vous</button>
 </body>
 
 </html>
