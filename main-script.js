@@ -1,6 +1,5 @@
 var mainApp = angular.module('mainApp', ['ngAnimate', 'ngCookies']);
 mainApp.controller('mainCtrl', function($scope, $cookies){
-  console.log($cookies.get('user'));
    if ($cookies.get('user') === undefined)
     location.href = "/index.html";
    $scope.main = {};
@@ -12,9 +11,18 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
    $scope.main.listMsgInChannel = {}; // list of msg displayed in the channel since current user's connection
    $scope.model.availableChannelsList = []; // list of all opened channels in the server
    $scope.model.writeChannels = false;
-   $scope.model.selectedChannel = "";
+   $scope.model.selectedChannel = ""; // current channel
+   $scope.model.chosenChannel = ""; // channel name selected when trying to join a new channel
+   $scope.model.defaultTabMsg = [];
 
    socket.emit("getChannels");
+   $scope.initDefaultTab = function() {
+     // creer tab "default"
+     // display default msg
+     // "bienvenu {{main.user}}\n"
+     // "pour commencer, rejoins un nouveau channel"
+   };
+   $scope.initDefaultTab();
 
    // lorsqu'on se déconnecte du serveur
    $scope.deconnexion = function() {
@@ -24,12 +32,16 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
    };
    // lorsqu'on clique sur un autre tab
    $scope.switchTab = function(tabName) {
-     // rien a emettre ! socket.emit('')
-
+     // si l'utilisateur est connecté à l'onglet
+     if (listMsgInChannel.keys.indexOf(tabName) > -1) {
+       selectedChannel = tabName;
+     } else {
+       console.log("Vous êtes déconnecté de cet onglet");
+     }
    };
    // lorsqu'on ouvre la fenetre pour rejoindre un autre channel
    $scope.joinTab = function() {
-     socket.emit('newConnection', [main.user, model.selectedChannel])
+     socket.emit('newConnection', [main.user, model.chosenChannel])
    };
    // lorsqu'on envoie un messages
    $scope.sendMessage = function() {
@@ -37,7 +49,7 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
      if (tmpMsg.substr(0, 1) == '/') {
        $scope.execCommand(tmpMsg);
      } else {
-       socket.emit('NewMsg', [tmpMsg, $scope.main.user, $scope.get_current_date()]);
+       socket.emit('NewMsg', [tmpMsg, $scope.main.user, $scope.get_date_time()]);
      }
      // on vide inputMessages
      main.message = "";
@@ -119,12 +131,13 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
      alert(errorMsg);
    };
    $scope.cancelJoinTab = function() {
-     $scope.model.selectedChannel = "";
+     $scope.model.chosenChannel = "";
    };
-   $scope.get_current_date = function() {
+   $scope.get_date_time = function() {
      var today = new Date();
      var dd = today.getDate() < 10 ? '0'+today.getDate() : today.getDate();
-     var mo = today.getMonth()+1 < 10 ? '0'+today.getMonth()+1 : today.getMonth()+1;
+     var mo = today.getMonth()+1;
+     mo = mo < 10 ? '0'+mo : mo;
      var yyyy = today.getFullYear() < 10 ? '0'+today.getFullYear() : today.getFullYear();
      var hh = today.getHours() < 10 ? '0'+today.getHours() : today.getHours();
      var mm = today.getMinutes() < 10 ? '0'+today.getMinutes() : today.getMinutes();

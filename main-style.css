@@ -1,7 +1,7 @@
 body {
   background: url(images/connectBackgroundOpacity.png) no-repeat center center fixed;
-  background-op
   background-size: cover;
+  margin: auto;
 }
 
 .MessageLine:nth-child(even) {
@@ -85,6 +85,14 @@ input.inputMessages {
 
 .errorMsg {
   color: red;
+}
+
+#selectChan {
+  display: inline;
+}
+
+#modalChannels {
+  height: 25%;
 }
 
 .animate-if.ng-enter, .animate-if.ng-leave {

@@ -43,16 +43,22 @@
     </div>
   </div>
   <div class="row main rowMain">
-    <div class="col m10 messages">
-      <div class="MessageLine">
-        <div class="date">DATE</div>
-        <div class="sender">Expéditeur</div>
-        <div class="content">MessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessage</div>
+    <div class="col m10 messages" ng-if="model.selectedChannel != ''">
+      <div class="MessageLine" ng-repeat="m for m in listMsgInChannel["+{{model.selectedChannel}}+"]">
+        <div class="date">{{m.date}}</div>
+        <div class="sender">{{m.sender}}</div>
+        <div class="content">{{m.content}}</div>
       </div>
-      <div class="MessageLine">
-        <div class="date">DATE</div>
-        <div class="sender">Expéditeur</div>
-        <div class="content">sdfdsfsd</div>
+    </div>
+    <div class="col m10 messages" ng-if="model.selectedChannel == ''">
+      <div class="MessageLine col s12">
+        <div class="date col s2">{{get_date_time()}}</div>
+        <div class="sender col s2">System</div>
+        <div class="content col s8">
+          Bienvenu {{main.user}}<br>
+          Pour commencer, rejoins un nouveau channel.<br>
+          Pour accéder à la liste des commandes, tapes '/help'
+        </div>
       </div>
     </div>
     <div class="col m2 .hide-on-small-only">
@@ -75,11 +81,7 @@
   <div id="modalChannels" class="modal modal-fixed-footer">
     <div class="modal-content">
       <h4>Join a channel</h4>
-      <p>
-
-      </p>
-      liste : {{model.availableChannelsList}}
-      <select ng-model="selectedChannel" ng-options="x for x in model.availableChannelsList">
+      <select id="selectChan" ng-model="chosenChannel" ng-options="x for x in model.availableChannelsList">
       </select>
     </div>
     <div class="modal-footer">
