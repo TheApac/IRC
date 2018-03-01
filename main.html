@@ -31,7 +31,15 @@
 <body ng-app="mainApp" ng-controller="mainCtrl">
   <div class="row rowMain">
     <div class="col m10">
-      <div class="col m10" ng-bind-html="channelTabs">
+      <div class="col m10" ng-if="main.channelTabs.length != 0">
+        <ul class="tabs">
+          <li class="tab col m2" ng-repeat="x for x in main.channelTabs"><a href="#"+{{x}}>{{x}}</a></li>
+        </ul>
+      </div>
+      <div class="col m10" ng-if="main.channelTabs.length == 0">
+        <ul class="tabs">
+          <li class="tab col m2"><a href="#">main</a></li>
+        </ul>
       </div>
       <div class="col m2">
         <button class="black-text modal-trigger" href="#modalChannels">Join a channel</button>
@@ -44,7 +52,7 @@
   </div>
   <div class="row main rowMain">
     <div class="col m10 messages" ng-if="model.selectedChannel != ''">
-      <div class="MessageLine" ng-repeat="m for m in listMsgInChannel["+{{model.selectedChannel}}+"]">
+      <div class="MessageLine" ng-repeat="m for m in main.listMsgInChannel["+{{model.selectedChannel}}+"]">
         <div class="date">{{m.date}}</div>
         <div class="sender">{{m.sender}}</div>
         <div class="content">{{m.content}}</div>
@@ -81,7 +89,7 @@
   <div id="modalChannels" class="modal modal-fixed-footer">
     <div class="modal-content">
       <h4>Join a channel</h4>
-      <select id="selectChan" ng-model="chosenChannel" ng-options="x for x in model.availableChannelsList">
+      <select id="selectChan" ng-model="model.chosenChannel" ng-options="x for x in model.availableChannelsList">
       </select>
     </div>
     <div class="modal-footer">
@@ -90,5 +98,6 @@
     </div>
   </div>
 </body>
+
 
 </html>

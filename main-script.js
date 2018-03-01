@@ -5,7 +5,7 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
    $scope.main = {};
    $scope.model = {};
    $scope.main.user = $cookies.get('user'); // current user
-   $scope.main.channelTabs = ""; // list of opened channels
+   $scope.main.channelTabs = []; // list of opened channels
    $scope.main.message = ""; // current message typed by user
    $scope.main.listUsersInChannel = {}; // list of connected users in each channel
    $scope.main.listMsgInChannel = {}; // list of msg displayed in the channel since current user's connection
@@ -16,13 +16,6 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
    $scope.model.defaultTabMsg = [];
 
    socket.emit("getChannels");
-   $scope.initDefaultTab = function() {
-     // creer tab "default"
-     // display default msg
-     // "bienvenu {{main.user}}\n"
-     // "pour commencer, rejoins un nouveau channel"
-   };
-   $scope.initDefaultTab();
 
    // lorsqu'on se déconnecte du serveur
    $scope.deconnexion = function() {
@@ -33,7 +26,7 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
    // lorsqu'on clique sur un autre tab
    $scope.switchTab = function(tabName) {
      // si l'utilisateur est connecté à l'onglet
-     if (listMsgInChannel.keys.indexOf(tabName) > -1) {
+     if ($scope.listMsgInChannel.keys.indexOf(tabName) > -1) {
        selectedChannel = tabName;
      } else {
        console.log("Vous êtes déconnecté de cet onglet");
@@ -41,27 +34,33 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
    };
    // lorsqu'on ouvre la fenetre pour rejoindre un autre channel
    $scope.joinTab = function() {
-     socket.emit('newConnection', [main.user, model.chosenChannel])
+     socket.emit('newConnection', [$scope.model.chosenChannel, $scope.main.user])
+     $scope.model.chosenChannel = '';
    };
    // lorsqu'on envoie un messages
    $scope.sendMessage = function() {
-     var tmpMsg = $scope.main.message;
-     if (tmpMsg.substr(0, 1) == '/') {
-       $scope.execCommand(tmpMsg);
+     var msg = $scope.main.message;
+     if (msg.substr(0, 1) == '/') {
+       $scope.execCommand(msg);
      } else {
-       socket.emit('NewMsg', [tmpMsg, $scope.main.user, $scope.get_date_time()]);
+       if($scope.model.selectedChannel != '') {
+         socket.emit('NewMessage', [msg, $scope.main.user,
+           $scope.model.selectedChannel, $scope.get_date_time()]);
+       } else {
+         alert("Rejoins d'abord un channel pour pouvoir communiquer avec d'autres personnes");
+       }
      }
      // on vide inputMessages
-     main.message = "";
+     $scope.main.message = "";
    };
    // pour parser et executer la commande
-   $scope.execCommand = function() {
-     var tmpMsg = main.message.split(" ");
-     if (len(tmpMsg) < 1)
+   $scope.execCommand = function(msg) {
+     var tmpMsg = $scope.main.message.split(" ");
+     if (tmpMsg.length < 1)
        return;
      switch (tmpMsg[0]) {
        case "/pseudo":
-         if(len(tmpMsg) == 2) {
+         if(tmpMsg.length == 2) {
            // socket.emit('renamePseudo', [$scope.main.user, tmpMsg[1]]);
            // $scope.main.user = tmpMsg[1]; //TODO in socket.on('changedPseudo')
          } else {
@@ -69,7 +68,7 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
          }
          break;
        case "/channels":
-         if(len(tmpMsg) == 1) {
+         if(tmpMsg.length == 1) {
            socket.emit('getChannels', [$scope.main.user]);
            $scope.model.writeChannels = true;
          } else {
@@ -77,38 +76,43 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
          }
          break;
        case "/disconnect":
-         if(len(tmpMsg) == 1) {
+         if(tmpMsg.length == 1) {
            $scope.deconnexion();
          } else {
            $scope.dispErrorCmd();
          }
          break;
        case "/delete":
-         if(len(tmpMsg) == 2 && tmpMsg[1] in $scope.main.listUsersInTab.keys) {
+         if(tmpMsg.length == 2 && $scope.main.channelTabs.indexOf(tmpMsg[1] > -1)) {
            // socet.emit('DeletingChannel', [$scope.main.user, tmpMsg[1]])
          } else {
            $scope.dispErrorCmd();
          }
          break;
        case "/rename":
-         if(len(tmpMsg) == 3 && tmpMsg[1] in $scope.main.listUsersInTab.keys) {
+         if(tmpMsg.length == 3 && $scope.main.channelTabs.indexOf(tmpMsg[1] > -1)) {
            // socet.emit('renameChan', [$scope.main.user, tmpMsg[1], tmpMsg[2]])
          } else {
            $scope.dispErrorCmd();
          }
          break;
        case "/leave":
-         if(len(tmpMsg) == 2 && tmpMsg[1] in $scope.main.listUsersInTab.keys) {
+         if(tmpMsg.length == 2 && $scope.main.channelTabs.indexOf(tmpMsg[1] > -1)) {
            socket.emit('deconnexionChannel', [tmpMsg[1], $scope.main.user])
          } else {
            $scope.dispErrorCmd();
          }
          break;
        case "/join":
-         if(len(tmpMsg) == 2 && tmpMsg[1] in $scope.main.listUsersInTab.keys) {
-           socket.emit('newConnection', [main.user, tmpMsg[1]])
+         if(tmpMsg.length == 2 && $scope.main.channelTabs.indexOf(tmpMsg[1]) == -1 && $scope.main.availableChannelsList.indexOf(tmpMsg[1]) > -1) {
+           socket.emit('newConnection', [tmpMsg[1], $scope.main.user])
          } else {
            $scope.dispErrorCmd();
+         }
+         break;
+       case "/new":
+         if(tmpMsg.length == 2) {
+           socket.emit('newChannel', [$scope.main.user, tmpMsg[1]]);
          }
          break;
        case "/help":
@@ -118,7 +122,8 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
               +"'/delete chan' to remove the channel 'chan'\n"
               +"'/rename chan name' to rename channel 'chan' into 'name'\n"
               +"'/leave chan' to leave channel 'chan'\n"
-              +"'/join chan' to join channel 'chan'");
+              +"'/join chan' to join channel 'chan'\n"
+              +"'/new chan' to create a new channel 'chan'");
          break;
        default:
          $scope.dispErrorCmd();
@@ -131,7 +136,7 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
      alert(errorMsg);
    };
    $scope.cancelJoinTab = function() {
-     $scope.model.chosenChannel = "";
+     $scope.model.chosenChannel = '';
    };
    $scope.get_date_time = function() {
      var today = new Date();
@@ -144,12 +149,32 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
      var ss = today.getSeconds() < 10 ? '0'+today.getSeconds() : today.getSeconds();
 
      today = dd+'/'+mo+'/'+yyyy+' '+hh+':'+mm+':'+ss;
-     console.log(today);
      return today;
    };
-   socket.on("ChannelCreated", function() {
+   socket.on("newConnection", function(params) {
      $scope.$apply(function() {
-       var tabs = $scope.main.channelTabs;
+       if($scope.main.listUsersInChannel.keys.indexOf(params[0]) == -1)
+         $scope.main.listUsersInChannel[params[0]] = [];
+       if($scope.main.listMsgInChannel.keys.indexOf(params[0]) == -1)
+         $scope.main.listMsgInChannel[params[0]] = [];
+
+       if($scope.main.user == params[1]){
+         $scope.main.channelTabs.push(params[0]);
+         $scope.main.selectedChannel = params[0];
+       }
+       $scope.main.listUsersInChannel[params[0]].push(params[1]);
+       $scope.main.listMsgInChannel[params[0]].push({
+         'date':$scope.get_date_time(),
+         'sender':'System',
+         'content':params[1]+" joined the channel"
+       });
+       socket.emit("ConnectedOnChannel", params[0]);
+       console.log($scope.main.listUsersInChannel);
+     });
+   });
+   socket.on("ChannelCreated", function(params) {
+     $scope.$apply(function() {
+       var tabs = params;
        if(tabs == "")
          tabs = "<ul class='tabs'>";
        else {
@@ -189,20 +214,18 @@ mainApp.controller('mainCtrl', function($scope, $cookies){
          }
        }
        if($scope.model.writeChannels) {
-         // TODO write msg: msg
+         alert("Liste des channels disponibles :\n"+msg);
          $scope.model.writeChannels = false;
        }
      });
    });
    socket.on("newMessage", function(params) {
      $scope.$apply(function() {
-       // params = [content, user, date_time]
-       // TODO write msg: params
-       if (params[1] == $scope.main.user) {
-         // write on the right
-       } else {
-         // write on the left
-       }
+       $scope.main.listMsgInChannel[params[2]].push({
+         'date': params[3],
+         'sender': params[1],
+         'content': params[0]
+       });
      });
    });
  });
