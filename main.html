@@ -14,17 +14,18 @@
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
-  <script>
-    var socket = io('http://localhost:8080');
-    $(document).ready(function() {
-      $('.modal').modal();
-      $(".inputMessages").keypress(function(event) {
-        if (event.keyCode == 13) {
-          $(".sendMsgBtn").click();
-        }
-      });
+  <script>var socket = io('http://localhost:8080');
+  $(document).ready(function(){
+    $('.modal').modal({
+      dismissible: false
     });
-  </script>
+    $(".inputMessages").keypress(function(event) {
+      if (event.keyCode == 13) {
+        $(".sendMsgBtn").click();
+      }
+    });
+  });
+</script>
 </head>
 
 <body ng-app="mainApp" ng-controller="mainCtrl">
@@ -41,7 +42,7 @@
       <button class="black-text" ng-click="deconnexion()">deconnexion</button>
     </div>
   </div>
-  <div class="row main rowMain mainBody">
+  <div class="row main rowMain">
     <div class="col m10 messages">
       <div class="MessageLine">
         <div class="date">DATE</div>
@@ -56,7 +57,10 @@
     </div>
     <div class="col m2 .hide-on-small-only">
       <div>
-        Liste personnes connectées
+        Liste des utilisateurs connectés :
+        <ul ng-if="model.selectedChannel != ''">
+          <li ng-repeat="u in main.listUsersInChannel["+{{model.selectedChannel}}+"]">{{u}}</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -72,9 +76,11 @@
     <div class="modal-content">
       <h4>Join a channel</h4>
       <p>
-        <select ng-model="selectedChannel" ng-options="x for x in model.availableChannelsList">
-        </select>
+
       </p>
+      liste : {{model.availableChannelsList}}
+      <select ng-model="selectedChannel" ng-options="x for x in model.availableChannelsList">
+      </select>
     </div>
     <div class="modal-footer">
       <a href="#!" class="modal-action modal-close btn-flat" ng-click="joinTab()">Join</a>
